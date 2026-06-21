@@ -1,14 +1,22 @@
 # Stock Watcher Skill v1.0
 
-A simple yet powerful stock monitoring skill for OpenClaw that helps you track A-share stocks in real-time.
+> A 股行情监控工具，支持双数据源（新浪 + 腾讯）自动切换，无需 API 密钥，提供实时行情、自选股管理与盘中监控告警。
 
-## Features
+## 功能特色
 
-✅ **Real-time Stock Price Query** - Get instant access to real-time A-share stock prices using Sina Finance API  
-✅ **Watchlist Management** - Easily add/remove stocks to your personal watchlist  
-✅ **Intelligent Monitoring** - Automatically monitor stocks during trading hours and alert on significant price movements  
-✅ **No API Key Required** - Uses free, public APIs (Sina Finance) - no registration needed  
-✅ **Fast & Reliable** - Response time < 1 second, data delay ~3 seconds  
+✅ **实时股价查询** —— 新浪主用 + 腾讯备用，故障时自动整体切换
+✅ **自选股管理** —— 添加、删除、查看、清空自选股列表
+✅ **盘中智能监控** —— 交易时段自动监控，价格大幅变动时告警
+✅ **无需 API 密钥** —— 使用免费公开 API，无需注册
+✅ **快速可靠** —— 腾讯 API 响应 ~77ms，整体延迟 < 3 秒
+
+## Features (English)
+
+✅ **Real-time Stock Price Query** - Sina primary + Tencent failover (automatic switch on failure)
+✅ **Watchlist Management** - Add, remove, list, or clear your personal stock watchlist
+✅ **Intelligent Monitoring** - Auto-monitor during trading hours with price-movement alerts
+✅ **No API Key Required** - Uses free, public APIs - no registration needed
+✅ **Fast & Reliable** - Tencent API ~77ms response, overall latency < 3 seconds
 
 ## Quick Start
 
@@ -65,11 +73,11 @@ The skill uses Sina Finance's real-time API to fetch stock prices. No API key or
 **Example output:**
 ```
 【贵州茅台】(SH600519)
-  当前价：¥1215.000  (-2.02%)
-  今开：¥1235.000  最高：¥1238.870  最低：¥1211.220
-  昨收：¥1240.000
-  成交量：574.72万手  成交额：70.17亿
-  更新时间：2026-06-18 15:00:03
+  当前价:¥1215.000  (-2.02%)
+  今开:¥1235.000  最高:¥1238.870  最低:¥1211.220
+  昨收:¥1240.000
+  成交量:574.72万手  成交额:70.17亿
+  更新时间:2026-06-18 15:00:03
 ```
 
 ### Intelligent Monitoring (New in v1.0)
@@ -100,19 +108,26 @@ Create a cron job to run `monitor_stocks.py` every 5 minutes during trading hour
 
 ## Technical Details
 
-### Data Source
+### Data Source (Dual API)
 
-**Primary:** Sina Finance Real-time API  
-**Endpoint:** `http://hq.sinajs.cn/list={stock_codes}`  
-**Update frequency:** ~3 seconds  
-**Cost:** Free, no registration required  
+| API | Endpoint | Latency | Fields | Level 2 |
+|-----|----------|---------|--------|---------|
+| **Sina Finance** (Primary) | `hq.sinajs.cn` | ~107ms | 34 | ❌ |
+| **Tencent Finance** (Failover) | `qt.gtimg.cn` | ~77ms | 88 | ✅ |
+
+**Strategy:** Try Sina first; on any failure, **switch entirely to Tencent** (no mixing). Both are free and require no API key.
+**Update frequency:** ~3 seconds
+**Cost:** Free, no registration required
 
 ### Supported Markets
 
-- ✅ Shanghai Stock Exchange (SH, codes starting with 6)
-- ✅ Shenzhen Stock Exchange (SZ, codes starting with 0 or 3)
-- ❌ Hong Kong stocks (not yet supported)
-- ❌ US stocks (not yet supported)
+- ✅ 沪市主板（600/601/603/605）
+- ✅ 深市主板（000/001/002）
+- ✅ 创业板（300）
+- ✅ 科创板（688/689）
+- ✅ 北交所（430/830/871/873 等）
+- ❌ 港股（Tencent API 已支持，待扩展）
+- ❌ 美股（待支持）
 
 ### Dependencies
 
@@ -125,16 +140,19 @@ Create a cron job to run `monitor_stocks.py` every 5 minutes during trading hour
 
 ```
 stock-watcher/
-├── SKILL.md              # Skill definition and metadata
+├── SKILL.md              # Skill definition (bilingual CN/EN)
 ├── README.md             # This file
+├── skill-card.md         # ClawHub metadata card
 └── scripts/
     ├── add_stock.py      # Add stock to watchlist
     ├── remove_stock.py   # Remove stock from watchlist
     ├── list_stocks.py    # List all stocks in watchlist
     ├── clear_watchlist.py # Clear entire watchlist
-    ├── summarize_performance.py  # View watchlist performance
+    ├── summarize_performance.py  # Watchlist performance summary (dual API)
     ├── monitor_stocks.py          # Real-time monitoring script
+    ├── query_stock_detail.py     # 88-field stock detail query (Tencent)
     ├── config.py         # Configuration management
+    ├── test_tencent_simple.py    # Tencent API quick test
     ├── install.sh        # Installation script (Linux/macOS)
     └── uninstall.sh      # Uninstallation script (Linux/macOS)
 ```
@@ -142,15 +160,15 @@ stock-watcher/
 ## Troubleshooting
 
 ### "行情数据暂不可用" (Market data temporarily unavailable)
-**Cause:** Market is closed (weekends, holidays, or outside trading hours)  
+**Cause:** Market is closed (weekends, holidays, or outside trading hours)
 **Solution:** Wait for market to open (Monday-Friday 09:30-15:00 Beijing time)
 
 ### "获取数据失败" (Failed to fetch data)
-**Cause:** Network issue or Sina API rate limiting  
+**Cause:** Network issue or Sina API rate limiting
 **Solution:** Wait a few seconds and retry, or check network connection
 
 ### Windows command line Chinese character garbled
-**Cause:** Windows command line uses GBK encoding by default  
+**Cause:** Windows command line uses GBK encoding by default
 **Solution:** The scripts include UTF-8 encoding fixes, make sure you're using Python 3.7+
 
 ## Publishing
@@ -172,13 +190,18 @@ MIT License - feel free to modify and distribute.
 
 ## Changelog
 
-### v1.0 (2026-06-21)
-- ✅ Initial release
-- ✅ Real-time price query using Sina Finance API
-- ✅ Watchlist management (add/remove/list/clear)
-- ✅ Performance summary
-- ✅ Intelligent monitoring with alert system
-- ✅ Windows command line UTF-8 encoding fix
+### v1.0 (2026-06-21) — 本版本
+- ✅ 双数据源架构：新浪主用 + 腾讯备用，整体切换逻辑
+- ✅ 通用股票详情查询：88 字段完整数据，含 Level 2 买卖五档
+- ✅ Windows 中文编码修复：所有脚本强制 UTF-8 无 BOM
+- ✅ 版本号统一：所有脚本版本号均为 v1.0
+- ✅ 10 个功能脚本全量通过测试
+
+### v0.x — 基于原版 (Robin797860 / ClawHub)
+- ✅ 新浪金融 API 实时行情
+- ✅ 自选股管理（添加/删除/查看/清空）
+- ✅ 性能汇总摘要
+- ✅ 盘中智能监控告警
 
 ## Support
 
@@ -186,7 +209,7 @@ For issues and feature requests, please contact the author or submit an issue on
 
 ---
 
-**Author:** OpenClaw User  
-**Created:** 2026-06-21  
+**Author:** OpenClaw User
+**Created:** 2026-06-21
 **Last Updated:** 2026-06-21
 
