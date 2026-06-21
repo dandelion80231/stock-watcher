@@ -4,18 +4,18 @@
 
 ## 功能特色
 
-✅ **实时股价查询** —— 新浪主用 + 腾讯备用，故障时自动整体切换
-✅ **自选股管理** —— 添加、删除、查看、清空自选股列表
-✅ **盘中智能监控** —— 交易时段自动监控，价格大幅变动时告警
-✅ **无需 API 密钥** —— 使用免费公开 API，无需注册
+✅ **实时股价查询** —— 新浪主用 + 腾讯备用，故障时自动整体切换   
+✅ **自选股管理** —— 添加、删除、查看、清空自选股列表   
+✅ **盘中智能监控** —— 交易时段自动监控，价格大幅变动时告警   
+✅ **无需 API 密钥** —— 使用免费公开 API，无需注册   
 ✅ **快速可靠** —— 腾讯 API 响应 ~77ms，整体延迟 < 3 秒
 
 ## Features (English)
 
-✅ **Real-time Stock Price Query** - Sina primary + Tencent failover (automatic switch on failure)
-✅ **Watchlist Management** - Add, remove, list, or clear your personal stock watchlist
-✅ **Intelligent Monitoring** - Auto-monitor during trading hours with price-movement alerts
-✅ **No API Key Required** - Uses free, public APIs - no registration needed
+✅ **Real-time Stock Price Query** - Sina primary + Tencent failover (automatic switch on failure)   
+✅ **Watchlist Management** - Add, remove, list, or clear your personal stock watchlist   
+✅ **Intelligent Monitoring** - Auto-monitor during trading hours with price-movement alerts   
+✅ **No API Key Required** - Uses free, public APIs - no registration needed   
 ✅ **Fast & Reliable** - Tencent API ~77ms response, overall latency < 3 seconds
 
 ## Quick Start
