@@ -6,6 +6,26 @@
 
 ---
 
+## 🚀 快速安装
+
+```bash
+# 使用 ClawHub CLI 安装
+clawhub install stock-watcher-cn
+
+# 或在 OpenClaw 中加载技能
+openclaw skills load stock-watcher-cn
+
+# 手动安装：克隆仓库后安装依赖
+pip install requests
+```
+
+**安装后验证**：
+```bash
+python scripts/manage.py list
+```
+
+---
+
 ## 安装
 
 ### 依赖
