@@ -1,43 +1,74 @@
-## Description: <br>
-Stock Watcher manages a personal stock watchlist and summarizes recent Chinese A-share performance using data from 10jqka.com.cn. <br>
+## Description:
+股票盯盯（Stock Watcher）是一款专业股票智能监控系统，支持 A 股、ETF、港股及国际贵金属的实时盯盘与预警。采用「腾讯主数据源 + 新浪备用 + 东方财富 ETF」三源架构保障数据稳定性。
 
-This skill is ready for commercial/non-commercial use. <br>
+---
 
-## Publisher: <br>
-[Robin797860](https://clawhub.ai/user/Robin797860) <br>
+## 核心功能矩阵
 
-### License/Terms of Use: <br>
+### 📊 数据与行情
+| 功能 | 说明 |
+|------|------|
+| 自选股管理 | 添加/删除/查看列表（支持沪市、深市、北交所、港股） |
+| 实时行情 | 价格、涨跌幅、成交量、成交额、市值、换手率 |
+| 批量行情摘要 | 一键查看所有自选股当日表现 |
+| 详细信息查询 | 88 字段完整数据，含 PE/PB/ROE/涨跌停等 |
 
+### 📈 技术分析
+| 功能 | 说明 |
+|------|------|
+| 技术指标 | MACD（柱状图/DIF/DEA）、KDJ（B/J值）、MA5/10/20/60、BOLL |
+| 综合评分 | 基于段永平选股框架的量化评分（1-10分） |
+| Serenity 分析 | Serenity 量化系统瓶颈识别 |
+| 风险提示 | 多维度风险点识别（退市/亏损/泡沫/高估/造假） |
 
-## Use Case: <br>
-External users and agents use this skill to maintain a local watchlist of Chinese A-share stocks, list or clear that watchlist, and request concise recent performance summaries. <br>
+### 🚨 七大预警规则
+| 规则 | 说明 | 触发条件 |
+|------|------|---------|
+| 成本百分比预警 | 基于持仓成本的盈亏提醒 | 盈利/亏损达到设定% |
+| 单日涨跌幅预警 | 个股±4% / ETF±2% / 黄金±3% | 差异化阈值 |
+| 成交量异动预警 | 放量/缩量检测 | 对比5日均量 |
+| 均线金叉死叉预警 | MA5/MA10/MA20 趋势判断 | 黄金交叉/死叉 |
+| RSI 超买超卖预警 | 70/30 阈值 | RSI 突破阈值 |
+| 跳空缺口预警 | 向上/向下跳空检测 | 缺口 > 1% |
+| 动态止盈止损预警 | 移动止损保护利润 | 回撤达到设定% |
 
-### Deployment Geography for Use: <br>
-Global <br>
+### 📋 报告与分析
+| 功能 | 说明 |
+|------|------|
+| 收盘报告 | 每日自选股收盘汇总 |
+| 操盘建议 | 基于风险评估的操作建议 |
+| 个股深度分析 | 段永平框架 + Serenity 瓶颈分析 |
+| 风险评估报告 | 个股风险点全面梳理 |
 
-## Known Risks and Mitigations: <br>
-Risk: The skill stores a local watchlist under ~/.clawdbot/stock_watcher/watchlist.txt. <br>
-Mitigation: Confirm local watchlist storage is acceptable before installation and remove the file or use the cleanup commands when it is no longer needed. <br>
-Risk: Stock lookups send watched stock codes to 10jqka.com.cn. <br>
-Mitigation: Use the performance summary only when sharing those stock codes with the market-data site is acceptable. <br>
-Risk: Clear and uninstall commands can delete the saved watchlist. <br>
-Mitigation: Back up the watchlist before clearing it or uninstalling the skill if the data should be retained. <br>
+### 💡 特色设计
+- **中国习惯**：涨红跌绿，沪深京港全市场覆盖
+- **数据源三层保障**：腾讯（主）→ 新浪（备）→ 东方财富 ETF，数据稳
+- **整百股合规**：A股规则自动校验，避免违规买入
+- **免费数据**：全程无付费 API，纯公共数据源
 
+---
 
-## Reference(s): <br>
-- [Stock Watcher release page](https://clawhub.ai/Robin797860/stock-watcher) <br>
-- [10jqka stock pages](https://stockpage.10jqka.com.cn/{stock_code}/) <br>
-- [Robin797860 publisher profile](https://clawhub.ai/user/Robin797860) <br>
+## Publisher:
+本 workspace 定制版，基于 ClawHub 原版 `stock-watcher-cn` v4.0.2 增强
 
+## Use Case:
+- 每日自选股行情快速浏览
+- 个股技术面/基本面深度分析
+- 智能选股辅助（段永平框架 + 量化评分）
+- 持仓股票风险监控与预警
+- 收盘后系统性复盘
 
-## Skill Output: <br>
-**Output Type(s):** [text, shell commands, configuration, guidance] <br>
-**Output Format:** [Plain text command output and concise agent guidance] <br>
-**Output Parameters:** [1D] <br>
-**Other Properties Related to Output:** [Stores watchlist entries locally as stock_code|stock_name lines and may include stock detail URLs.] <br>
+## Deployment Geography:
+中国大陆为主（A股/港股），兼顾全球市场
 
-## Skill Version(s): <br>
-1.0.0 (source: server-resolved release metadata) <br>
+## Known Risks:
+- 技术指标（MACD/KDJ 等）为滞后指标，用于确认趋势而非预测
+- 预警为参考信息，不构成投资建议
+- 段永平评分和 Serenity 分析仅供参考
 
-## Ethical Considerations: <br>
-Users should evaluate whether this skill is appropriate for their environment, review any generated or modified files before relying on them, and apply their organization's safety, security, and compliance requirements before deployment. <br>
+## Skill Output:
+**输出类型**: 文本、Markdown、Python 配置片段、Shell 命令
+**输出格式**: 中文 Markdown，含数据表格、预警消息、技术指标结果
+
+## Skill Version:
+2.0（定制增强版）
