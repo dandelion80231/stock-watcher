@@ -49,7 +49,7 @@
 ---
 
 ## Publisher:
-本 workspace 定制版，基于 ClawHub 原版 `stock-watcher-cn` v4.0.2 增强
+本 workspace 定制版，基于 ClawHub 原版 `stock-watcher` 增强
 
 ## Use Case:
 - 每日自选股行情快速浏览
@@ -71,4 +71,4 @@
 **输出格式**: 中文 Markdown，含数据表格、预警消息、技术指标结果
 
 ## Skill Version:
-2.0（定制增强版）
+3.0（定制增强版）

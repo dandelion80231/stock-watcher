@@ -1,6 +1,7 @@
 {
-  "ownerId": "kn7am8zt38xg4kph0be0dpt9yd8399vj",
-  "slug": "stock-watcher-cn",
-  "version": "4.0.2",
+  "name": "stock-watcher",
+  "displayName": "股票盯盯 (Stock Watcher)",
+  "slug": "stock-watcher",
+  "version": "3.0.0",
   "publishedAt": 1774683962097
 }

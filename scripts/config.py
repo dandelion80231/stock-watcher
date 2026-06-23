@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Stock Watcher v2.0 - 集中配置管理
+Stock Watcher v3.0 - 集中配置管理
 统一管理路径、数据源、监控参数等配置
 
 数据源策略（基于实际测试结果）:
@@ -16,7 +16,8 @@ import os
 import json
 
 # ============ 路径配置 ============
-DATA_DIR = os.path.expanduser("~/.clawdbot/stock_watcher")
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.data')
+DATA_DIR = os.path.abspath(DATA_DIR)
 os.makedirs(DATA_DIR, exist_ok=True)
 
 WATCHLIST_FILE = os.path.join(DATA_DIR, "watchlist.txt")

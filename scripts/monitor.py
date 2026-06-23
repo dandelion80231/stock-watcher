@@ -13,6 +13,8 @@ if not isinstance(sys.stdout, io.TextIOWrapper):
 import json
 import time
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from datetime import datetime
 from config import (
     DATA_DIR, WATCHLIST_FILE, PORTFOLIO_FILE, ALERT_LOG_FILE,
@@ -417,20 +419,58 @@ class AlertEngine:
         return '\n'.join(lines)
 
 
-if __name__ == '__main__':
+def run_daemon():
+    """常驻后台循环，按交易时段智能频率监控"""
+    from datetime import datetime
+    from time import sleep
+
     engine = AlertEngine()
-    
-    # 测试1: 监控扫描
-    print("=== 监控扫描测试 ===")
-    watchlist = load_watchlist()
-    if watchlist:
-        for msg in engine.run_once(watchlist, include_specials=['XAUUSD']):
-            print(msg)
+
+    def get_interval():
+        now = datetime.now()
+        if now.weekday() >= 5:
+            return 3600
+        t = now.hour * 60 + now.minute
+        if (9 * 60 + 30 <= t <= 11 * 60 + 30) or (13 * 60 <= t <= 15 * 60):
+            return 300
+        elif 11 * 60 + 30 < t < 13 * 60:
+            return 600
+        elif 15 * 60 <= t < 24 * 60:
+            return 1800
+        else:
+            return 3600
+
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] 监控守护进程启动", flush=True)
+    while True:
+        try:
+            watchlist = load_watchlist()
+            if watchlist:
+                for msg in engine.run_once(watchlist, include_specials=['XAUUSD']):
+                    print(msg, flush=True)
+            interval = get_interval()
+            sleep(interval)
+        except KeyboardInterrupt:
+            print("监控停止")
+            break
+        except Exception as e:
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] 错误: {e}", flush=True)
+            sleep(60)
+
+
+if __name__ == '__main__':
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == 'daemon':
+        run_daemon()
     else:
-        print("自选股列表为空，请先添加股票")
-    
-    # 测试2: 收盘总结
-    print("\n=== 收盘总结测试 ===")
-    if watchlist:
-        summary = engine.generate_daily_summary(watchlist, include_specials=['XAUUSD'])
-        print(summary)
+        engine = AlertEngine()
+        print("=== 监控扫描测试 ===")
+        watchlist = load_watchlist()
+        if watchlist:
+            for msg in engine.run_once(watchlist, include_specials=['XAUUSD']):
+                print(msg)
+        else:
+            print("自选股列表为空，请先添加股票")
+        print("\n=== 收盘总结测试 ===")
+        if watchlist:
+            summary = engine.generate_daily_summary(watchlist, include_specials=['XAUUSD'])
+            print(summary)

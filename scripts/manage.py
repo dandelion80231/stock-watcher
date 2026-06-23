@@ -5,6 +5,8 @@ Stock Watcher v2.0 - 自选股管理命令
 支持自然语言指令: "添加600519" "删除茅台" "查看自选股"
 """
 import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import io
 if not isinstance(sys.stdout, io.TextIOWrapper):
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')

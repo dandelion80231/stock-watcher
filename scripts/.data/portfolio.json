@@ -1,0 +1,34 @@
+{
+  "000021": {
+    "name": "深科技",
+    "cost": 45.392,
+    "shares": 100,
+    "alerts": {
+      "cost_pct_above": 15.0,
+      "cost_pct_below": -12.0,
+      "change_pct_above": 4.0,
+      "change_pct_below": -4.0,
+      "volume_surge": 2.0,
+      "ma_monitor": true,
+      "rsi_monitor": true,
+      "gap_monitor": true,
+      "trailing_stop": true
+    }
+  },
+  "002491": {
+    "name": "通鼎互联",
+    "cost": 34.13,
+    "shares": 100,
+    "alerts": {
+      "cost_pct_above": 15.0,
+      "cost_pct_below": -12.0,
+      "change_pct_above": 4.0,
+      "change_pct_below": -4.0,
+      "volume_surge": 2.0,
+      "ma_monitor": true,
+      "rsi_monitor": true,
+      "gap_monitor": true,
+      "trailing_stop": true
+    }
+  }
+}

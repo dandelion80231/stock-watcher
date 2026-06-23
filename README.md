@@ -1,4 +1,4 @@
-# Stock Watcher 股票盯盯 v2.0
+# Stock Watcher 股票盯盯 v3.0
 
 专业股票智能监控系统，支持 A 股、ETF、港股及国际贵金属的实时盯盘、技术分析、风险评估与智能预警。
 
@@ -10,10 +10,10 @@
 
 ```bash
 # 使用 ClawHub CLI 安装
-clawhub install stock-watcher-cn
+clawhub install stock-watcher
 
-# 或在 OpenClaw 中加载技能
-openclaw skills load stock-watcher-cn
+# 或在 EasyClaw 中加载技能
+easyclaw skills load stock-watcher
 
 # 手动安装：克隆仓库后安装依赖
 pip install requests
@@ -207,7 +207,7 @@ python manage.py clear
 
 ### 自选股列表文件
 
-自选股数据保存在 `scripts/watchlist.json`，由 `manage.py add/remove/clear` 命令自动维护。
+自选股数据保存在 `.data/watchlist.txt`，持仓配置保存在 `.data/portfolio.json`，由 `manage.py add/remove/clear` 命令自动维护。
 
 ### 预警配置（monitor.py）
 
@@ -331,28 +331,33 @@ python query_detail.py 600519
 
 ```
 stock-watcher/
-├── SKILL.md                    # OpenClaw 技能配置（必读）
+├── SKILL.md                    # EasyClaw 技能配置
 ├── README.md                   # 本文件
 ├── skill-card.md               # 功能卡片简介
 ├── 测试说明.md                 # 功能测试说明
 ├── requirements.txt            # Python 依赖
 ├── control.sh                  # Linux/Mac 后台控制脚本
 ├── config-example.py           # 配置示例
+├── .data/                      # 运行时数据目录
+│   ├── watchlist.txt           # 自选股列表
+│   └── portfolio.json          # 持仓配置
 └── scripts/
-    ├── manage.py                    # 自选股管理（add/list/remove/clear）
-    ├── summarize_performance.py     # 批量行情摘要
-    ├── query_detail.py              # 个股深度分析（推荐）
-    ├── query_stock_detail.py        # 88字段详细信息
-    ├── technical_analysis.py        # 技术指标分析
-    ├── stock_analyzer.py            # 段永平评分 + Serenity 分析
-    ├── risk_advice.py               # 风险评估 + 操盘建议
-    ├── daily_report.py              # 收盘汇总报告
-    ├── monitor.py                   # 七大预警实时监控
-    ├── monitor_stocks.py            # 基础行情监控
-    ├── eastmoney_alt.py             # 东方财富辅助工具
-    ├── close_summary.py             # 收盘总结工具
-    ├── trader_analyzer.py           # 操盘手行为分析引擎
-    └── watchlist_manager.py         # 自选股底层管理
+    ├── monitor.py              # 核心监控 (7大规则 + 操盘手检测)
+    ├── manage.py               # 自选股管理（add/list/remove/clear）
+    ├── summarize_performance.py # 批量行情摘要
+    ├── query_detail.py         # 个股深度分析（推荐）
+    ├── query_stock_detail.py   # 88字段详细信息
+    ├── technical_analysis.py   # 技术指标分析 (MACD/KDJ/MA/BOLL/RSI)
+    ├── stock_analyzer.py       # 段永平选股框架 + Serenity 分析
+    ├── risk_advice.py          # 风险评估 + 操盘建议
+    ├── daily_report.py         # 收盘自选股汇总报告
+    ├── trader_analyzer.py      # 操盘手行为分析引擎
+    ├── close_summary.py        # 两阶段收盘总结
+    ├── pick_short_term.py      # 短线选股策略
+    ├── screen_stocks.py        # 多维度条件选股
+    ├── eastmoney_alt.py        # 东方财富辅助工具
+    ├── watchlist_manager.py    # 自选股底层管理
+    └── data_source.py          # 多数据源统一接口
 ```
 
 ---
@@ -361,7 +366,8 @@ stock-watcher/
 
 | 版本 | 内容 |
 |------|------|
-| **v2.0** | 文档合并精简 + 技术分析/段永平选股框架 + 三数据源支持 |
+| **v3.0** | 重构配置系统，三数据源架构，新增短线选股 + 条件选股，优化持仓管理 |
+| **v2.0** | 7大预警规则 + 操盘手行为分析 + 文档合并精简 |
 | **v1.0** | 初始版本，支持双 API（新浪 + 腾讯）|
 
 ---
